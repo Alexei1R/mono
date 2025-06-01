@@ -1,0 +1,104 @@
+# Window Manager
+hyprland
+hyprpaper
+hyprlock
+hyprcursor
+
+# Bar 
+waybar
+wlogout
+wofi
+
+
+# Fonts
+ttf-jetbrains-mono
+
+
+# Terminal and Editor
+kitty
+neovim
+
+# Browser and PDF viewer
+zen-browser-bin
+zathura
+
+
+# Command-line tools
+fastfetch
+curl
+wget
+fzf
+zoxide
+yazi
+tree
+github-cli
+starship
+
+# Clipboard managers
+wl-clipboard
+cliphist
+
+
+swappy
+grim
+slurp
+
+
+# Utilities
+brightnessctl
+pavucontrol
+gnome-disk-utility
+zsh
+
+# Communication
+telegram-desktop
+
+# Development tools
+go
+cmake
+gcc
+clang
+ninja
+gstreamer
+gst-plugins-base
+gst-plugins-good
+gst-plugins-bad
+gst-plugins-ugly
+gst-libav
+ffmpeg
+gtk2
+gtk3
+libpng
+libjpeg-turbo
+openexr
+libtiff
+libwebp
+boost
+
+# More
+jq
+pamixer
+pipewire
+bluez
+bluez-utils
+blueman
+network-manager-applet
+btop
+pacman-contrib
+ttf-jetbrains-mono-nerd
+noto-fonts-emoji
+nautilus
+dunst
+libnotify
+nwg-look
+sassc
+zenity
+wireplumber
+cava
+tidy
+
+tree-sitter
+
+
+
+webkit2gtk gtk3

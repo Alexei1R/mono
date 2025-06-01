@@ -1,0 +1,94 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono Nerd Font", monospace;
+    font-size: 12px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(21, 21, 21, 0.8);
+    color: #ffffff;
+}
+
+tooltip {
+    background: #1e1e2e;
+    border-radius: 8px;
+    border: 1px solid #313244;
+}
+
+#workspaces button {
+    padding: 2px 8px;
+    color: #cdd6f4;
+    background: transparent;
+    border-top: 2px solid transparent;
+}
+
+#workspaces button:hover {
+    background: rgba(49, 50, 68, 0.5);
+}
+
+#workspaces button.active {
+    border-top: 2px solid #cdd6f4;
+    background: rgba(49, 50, 68, 0.5);
+}
+
+#workspaces button.urgent {
+    color: #f38ba8;
+    border-top: 2px solid #f38ba8;
+}
+
+#clock,
+#battery,
+#network,
+#pulseaudio,
+#backlight,
+#tray {
+    padding: 0 8px;
+    margin: 2px 3px;
+    background-color: rgba(49, 50, 68, 0.5);
+    border-radius: 4px;
+}
+
+#battery.warning {
+    color: #f9e2af;
+}
+
+#battery.critical {
+    color: #f38ba8;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: #f38ba8;
+        color: #181825;
+    }
+}
+
+#network.disconnected {
+    color: #f38ba8;
+}
+
+#pulseaudio.muted {
+    color: #f9e2af;
+}
+
+/* Reduced paddings for a slimmer design */
+#workspaces {
+    margin: 2px 0;
+}
+
+#window {
+    margin-left: 8px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+#clock {
+    font-weight: bold;
+}
