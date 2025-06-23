@@ -171,3 +171,20 @@ bp() {
         echo "//NOTE: Results copied to clipboard"
     fi
 }
+
+
+
+
+# bun completions
+[ -s "/home/toor/.bun/_bun" ] && source "/home/toor/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+
+
+export PATH="$PATH:/home/toor/.local/share/bin"
+
+
+alias scaffold="bash /home/toor/.local/share/bin/scaffold.sh"
