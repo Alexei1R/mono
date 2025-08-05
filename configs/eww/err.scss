@@ -1,0 +1,231 @@
+$bg-primary: #0a0a0a;
+$bg-secondary: #1a1a1a;
+$bg-accent: #2a2a2a;
+$text-primary: #ffffff;
+$text-secondary: #b0b0b0;
+$text-dim: #808080;
+$accent-blue: #61afef;
+$accent-green: #98c379;
+$accent-red: #e06c75;
+$accent-yellow: #e5c07b;
+$accent-purple: #c678dd;
+$accent-cyan: #56b6c2;
+
+* {
+  all: unset;
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+}
+
+.desktop-container {
+  background: linear-gradient(135deg, $bg-primary 0%, $bg-secondary 100%);
+  min-height: 100vh;
+  color: $text-primary;
+}
+
+.top-bar {
+  padding: 8px 16px;
+  background: rgba(26, 26, 26, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(97, 175, 239, 0.2);
+}
+
+.workspaces {
+  gap: 4px;
+}
+
+.workspace {
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 14px;
+  background: rgba(176, 176, 176, 0.1);
+  color: $text-dim;
+  font-weight: 500;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &.occupied {
+    background: rgba(97, 175, 239, 0.3);
+    color: $accent-blue;
+  }
+  
+  &.active {
+    background: $accent-blue;
+    color: $bg-primary;
+    box-shadow: 0 0 8px rgba(97, 175, 239, 0.5);
+  }
+  
+  &:hover {
+    transform: scale(1.1);
+    background: rgba(97, 175, 239, 0.4);
+  }
+}
+
+.clock-section {
+  text-align: center;
+}
+
+.time-top {
+  font-size: 14px;
+  color: $text-primary;
+  font-weight: 600;
+}
+
+.date-top {
+  font-size: 11px;
+  color: $text-secondary;
+  font-weight: 400;
+}
+
+.system-quick {
+  font-size: 11px;
+  
+  .cpu-quick { color: $accent-blue; }
+  .ram-quick { color: $accent-green; }
+  .temp-quick { color: $accent-yellow; }
+}
+
+.center-content {
+  flex: 1;
+  padding: 32px;
+  gap: 32px;
+}
+
+.main-clock {
+  margin-bottom: 16px;
+}
+
+.time-large {
+  font-size: 4.5rem;
+  font-weight: 300;
+  color: $text-primary;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+.date-large {
+  font-size: 1.2rem;
+  color: $text-secondary;
+  font-weight: 400;
+}
+
+.uptime {
+  font-size: 0.9rem;
+  color: $text-dim;
+  font-style: italic;
+}
+
+.stats-container {
+  background: rgba(26, 26, 26, 0.8);
+  border-radius: 12px;
+  padding: 20px 24px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(97, 175, 239, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card {
+  text-align: center;
+  min-width: 70px;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: $text-secondary;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.cpu .stat-value { color: $accent-blue; }
+.memory .stat-value { color: $accent-green; }
+.disk .stat-value { color: $accent-purple; }
+.temp .stat-value { color: $accent-yellow; }
+
+.power-controls {
+  margin-top: 16px;
+}
+
+.power-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid rgba(97, 175, 239, 0.3);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+  
+  &.exit:hover {
+    background: $accent-red;
+    border-color: $accent-red;
+    color: white;
+  }
+  
+  &.reboot:hover {
+    background: $accent-yellow;
+    border-color: $accent-yellow;
+    color: $bg-primary;
+  }
+  
+  &.suspend:hover {
+    background: $accent-purple;
+    border-color: $accent-purple;
+    color: white;
+  }
+  
+  &.lock:hover {
+    background: $accent-blue;
+    border-color: $accent-blue;
+    color: white;
+  }
+}
+
+.bottom-bar {
+  padding: 8px 16px;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+.weather {
+  background: rgba(42, 42, 42, 0.6);
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid rgba(97, 175, 239, 0.2);
+}
+
+.weather-icon {
+  font-size: 1.2rem;
+}
+
+.weather-temp {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $accent-cyan;
+}
+
+.weather-desc {
+  font-size: 0.9rem;
+  color: $text-secondary;
+}
+
+@media (max-width: 1200px) {
+  .time-large { font-size: 3.5rem; }
+  .stats-container { padding: 16px 20px; }
+  .center-content { padding: 24px; gap: 24px; }
+}

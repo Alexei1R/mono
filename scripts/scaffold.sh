@@ -22,12 +22,11 @@ if [ ! -z "$2" ]; then
 fi
 
 FEATURE_PATH="$BASE_PATH/$ELEMENT"
-SUBFOLDERS=(components hooks services store types constants)
+SUBFOLDERS=(components hooks services store types constants api utils)
 
 mkdir -p "$FEATURE_PATH"
 for SUB in "${SUBFOLDERS[@]}"; do
   mkdir -p "$FEATURE_PATH/$SUB"
-  touch "$FEATURE_PATH/$SUB/index.ts"
 done
 
 # Main index barrel
@@ -38,25 +37,75 @@ export * from "./hooks";
 export * from "./services";
 export * from "./store";
 export * from "./types";
+export * from "./api";
+export * from "./utils";
 export { Component as ${ELEMENT^}Page } from "./${ELEMENT}.page";
-export * from "./main";
+export { default as ${ELEMENT^}Main } from "./main";
 EOF
 
-# main.tsx
-cat > "$FEATURE_PATH/main.tsx" <<MAIN
-import React from "react";
+# Components barrel
+cat > "$FEATURE_PATH/components/index.ts" <<EOF
+EOF
+
+# Hooks barrel
+cat > "$FEATURE_PATH/hooks/index.ts" <<EOF
+export { default as use${ELEMENT^} } from "./use-${ELEMENT}";
+EOF
+
+# Services barrel
+cat > "$FEATURE_PATH/services/index.ts" <<EOF
+export { default as ${ELEMENT}Service } from "./${ELEMENT}.service";
+EOF
+
+# Store barrel
+cat > "$FEATURE_PATH/store/index.ts" <<EOF
+export { default as use${ELEMENT^}Store } from "./${ELEMENT}.store";
+EOF
+
+# Types barrel
+cat > "$FEATURE_PATH/types/index.ts" <<EOF
+export type { ${ELEMENT^} } from "./${ELEMENT}.types";
+EOF
+
+# Constants barrel
+cat > "$FEATURE_PATH/constants/index.ts" <<EOF
+export { ${ELEMENT^^}_CONSTANTS } from "./${ELEMENT}.constants";
+EOF
+
+# API barrel
+cat > "$FEATURE_PATH/api/index.ts" <<EOF
+export { default as ${ELEMENT}Api } from "./${ELEMENT}.api";
+EOF
+
+# Utils barrel
+cat > "$FEATURE_PATH/utils/index.ts" <<EOF
+export { ${ELEMENT}Utils } from "./${ELEMENT}.utils";
+EOF
+
+# Create empty files with proper extensions
+touch "$FEATURE_PATH/types/${ELEMENT}.types.ts"
+touch "$FEATURE_PATH/constants/${ELEMENT}.constants.ts"
+touch "$FEATURE_PATH/api/${ELEMENT}.api.ts"
+touch "$FEATURE_PATH/services/${ELEMENT}.service.ts"
+touch "$FEATURE_PATH/store/${ELEMENT}.store.ts"
+touch "$FEATURE_PATH/hooks/use-${ELEMENT}.ts"
+touch "$FEATURE_PATH/utils/${ELEMENT}.utils.ts"
+
+# Main component
+cat > "$FEATURE_PATH/main.tsx" <<EOF
 const Main = () => (
   <div>
     <h1>${ELEMENT^} Feature Main</h1>
   </div>
 );
+
 export default Main;
-MAIN
+EOF
 
 # Feature page
-cat > "$FEATURE_PATH/${ELEMENT}.page.tsx" <<PAGE
-import React from "react";
+cat > "$FEATURE_PATH/${ELEMENT}.page.tsx" <<EOF
 import Main from "./main";
+
 const ${ELEMENT^}Page = () => {
   return (
     <div>
@@ -64,54 +113,10 @@ const ${ELEMENT^}Page = () => {
     </div>
   );
 };
+
 export const Component = ${ELEMENT^}Page;
-PAGE
+EOF
 
-# Service sample
-cat > "$FEATURE_PATH/services/${ELEMENT}.service.ts" <<SVC
-import { api } from "@/shared/api";
-const ${ELEMENT^^}_ROUTES = { GET: "/${ELEMENT}" };
-export class ${ELEMENT^}Service {
-  async getAll() {
-    try {
-      const { data } = await api.get(${ELEMENT^^}_ROUTES.GET);
-      return { data, success: true };
-    } catch (error) {
-      return { error: error?.message || "Failed", success: false };
-    }
-  }
-}
-export const ${ELEMENT}Service = new ${ELEMENT^}Service();
-SVC
-
-# Store sample
-cat > "$FEATURE_PATH/store/${ELEMENT}.store.ts" <<STORE
-import { create } from "zustand";
-export const use${ELEMENT^}Store = create((set) => ({
-  items: [],
-  setItems: (items) => set({ items }),
-  clear: () => set({ items: [] }),
-}));
-STORE
-
-# Hook sample
-cat > "$FEATURE_PATH/hooks/use-${ELEMENT}.ts" <<HOOK
-import { useQuery } from "@tanstack/react-query";
-import { ${ELEMENT}Service } from "../services/${ELEMENT}.service";
-import { use${ELEMENT^}Store } from "../store/${ELEMENT}.store";
-export const use${ELEMENT^} = () => {
-  const { items, setItems } = use${ELEMENT^}Store();
-  const q = useQuery({
-    queryKey: ["${ELEMENT}"],
-    queryFn: async () => {
-      const res = await ${ELEMENT}Service.getAll();
-      if (!res.success) throw new Error(res.error || "Failed");
-      setItems(res.data);
-      return res.data;
-    }
-  });
-  return { items, ...q };
-};
-HOOK
-
-echo "done"
+echo "✅ Feature '${ELEMENT}' created successfully at ${FEATURE_PATH}"
+echo "📁 Created folders: ${SUBFOLDERS[*]}"
+echo "📄 Created all barrel exports and empty TypeScript files"
