@@ -22,12 +22,15 @@ if [ ! -z "$2" ]; then
 fi
 
 FEATURE_PATH="$BASE_PATH/$ELEMENT"
-SUBFOLDERS=(components hooks services store types constants api utils)
+SUBFOLDERS=(components hooks services store types constants utils)
 
 mkdir -p "$FEATURE_PATH"
 for SUB in "${SUBFOLDERS[@]}"; do
   mkdir -p "$FEATURE_PATH/$SUB"
 done
+
+# Create api folder inside hooks
+mkdir -p "$FEATURE_PATH/hooks/api"
 
 # Main index barrel
 cat > "$FEATURE_PATH/index.ts" <<EOF
@@ -37,7 +40,6 @@ export * from "./hooks";
 export * from "./services";
 export * from "./store";
 export * from "./types";
-export * from "./api";
 export * from "./utils";
 export { Component as ${ELEMENT^}Page } from "./${ELEMENT}.page";
 export { default as ${ELEMENT^}Main } from "./main";
@@ -50,6 +52,12 @@ EOF
 # Hooks barrel
 cat > "$FEATURE_PATH/hooks/index.ts" <<EOF
 export { default as use${ELEMENT^} } from "./use-${ELEMENT}";
+export * from "./api";
+EOF
+
+# Hooks API barrel
+cat > "$FEATURE_PATH/hooks/api/index.ts" <<EOF
+export { default as ${ELEMENT}Api } from "./${ELEMENT}.api";
 EOF
 
 # Services barrel
@@ -72,11 +80,6 @@ cat > "$FEATURE_PATH/constants/index.ts" <<EOF
 export { ${ELEMENT^^}_CONSTANTS } from "./${ELEMENT}.constants";
 EOF
 
-# API barrel
-cat > "$FEATURE_PATH/api/index.ts" <<EOF
-export { default as ${ELEMENT}Api } from "./${ELEMENT}.api";
-EOF
-
 # Utils barrel
 cat > "$FEATURE_PATH/utils/index.ts" <<EOF
 export { ${ELEMENT}Utils } from "./${ELEMENT}.utils";
@@ -85,7 +88,7 @@ EOF
 # Create empty files with proper extensions
 touch "$FEATURE_PATH/types/${ELEMENT}.types.ts"
 touch "$FEATURE_PATH/constants/${ELEMENT}.constants.ts"
-touch "$FEATURE_PATH/api/${ELEMENT}.api.ts"
+touch "$FEATURE_PATH/hooks/api/${ELEMENT}.api.ts"
 touch "$FEATURE_PATH/services/${ELEMENT}.service.ts"
 touch "$FEATURE_PATH/store/${ELEMENT}.store.ts"
 touch "$FEATURE_PATH/hooks/use-${ELEMENT}.ts"
@@ -119,4 +122,5 @@ EOF
 
 echo "✅ Feature '${ELEMENT}' created successfully at ${FEATURE_PATH}"
 echo "📁 Created folders: ${SUBFOLDERS[*]}"
+echo "📄 API folder created at hooks/api/"
 echo "📄 Created all barrel exports and empty TypeScript files"
