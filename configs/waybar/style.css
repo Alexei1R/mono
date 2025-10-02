@@ -1,94 +1,87 @@
+/* //NOTE: Borderless, monochrome, GTK3-safe */
 * {
-    border: none;
-    border-radius: 0;
-    font-family: "JetBrains Mono Nerd Font", monospace;
-    font-size: 12px;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono Nerd Font", monospace;
+  font-size: 12px;
+  min-height: 0;
 }
 
 window#waybar {
-    background: rgba(21, 21, 21, 0.8);
-    color: #ffffff;
+  background: rgba(21, 21, 21, 0.50);
+  color: #ffffff;
 }
 
+/* Monochrome tooltip, no border */
 tooltip {
-    background: #1e1e2e;
-    border-radius: 8px;
-    border: 1px solid #313244;
+  background: rgba(24, 24, 24, 0.95);
+  border-radius: 6px;
 }
 
-#workspaces button {
-    padding: 2px 8px;
-    color: #cdd6f4;
-    background: transparent;
-    border-top: 2px solid transparent;
-}
-
-#workspaces button:hover {
-    background: rgba(49, 50, 68, 0.5);
-}
-
-#workspaces button.active {
-    border-top: 2px solid #cdd6f4;
-    background: rgba(49, 50, 68, 0.5);
-}
-
-#workspaces button.urgent {
-    color: #f38ba8;
-    border-top: 2px solid #f38ba8;
-}
-
+/* Modules: no borders, subtle mono backgrounds */
 #clock,
 #battery,
 #network,
 #pulseaudio,
 #backlight,
 #tray {
-    padding: 0 8px;
-    margin: 2px 3px;
-    background-color: rgba(49, 50, 68, 0.5);
-    border-radius: 4px;
+  padding: 0 8px;
+  margin: 2px 3px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
 }
 
-#battery.warning {
-    color: #f9e2af;
+/* Workspaces: remove bottom border, keep top highlight on active only */
+#workspaces {
+  margin: 2px 0;
 }
+
+#workspaces button {
+  padding: 2px 8px;
+  color: #e0e0e0;
+  background: transparent;
+  border-radius: 4px;
+}
+
+#workspaces button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#workspaces button.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+#workspaces button.urgent {
+  animation: pulse 1s ease-in-out infinite alternate;
+  color: #ffffff;
+}
+
+@keyframes pulse {
+  to { background: rgba(255, 255, 255, 0.14); }
+}
+
+/* Monochrome statuses */
+#battery.warning { color: #e6e6e6; }
 
 #battery.critical {
-    color: #f38ba8;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  color: #ffffff;
+  animation: blink 0.5s linear infinite alternate;
 }
 
 @keyframes blink {
-    to {
-        background-color: #f38ba8;
-        color: #181825;
-    }
+  to { background-color: rgba(255, 255, 255, 0.18); color: #111111; }
 }
 
-#network.disconnected {
-    color: #f38ba8;
-}
+#network.disconnected { color: #cfcfcf; }
+#pulseaudio.muted { color: #d9d9d9; }
 
-#pulseaudio.muted {
-    color: #f9e2af;
-}
-
-/* Reduced paddings for a slimmer design */
-#workspaces {
-    margin: 2px 0;
-}
-
+/* Window title */
 #window {
-    margin-left: 8px;
-    font-weight: normal;
-    font-style: italic;
+  margin-left: 8px;
+  font-weight: normal;
+  font-style: italic;
 }
 
-#clock {
-    font-weight: bold;
-}
+/* Clock emphasis */
+#clock { font-weight: bold; }
