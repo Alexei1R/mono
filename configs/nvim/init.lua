@@ -19,6 +19,15 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local default_notify = vim.notify
+
+vim.notify = function(msg, level, opts)
+	if msg:match("require%('lspconfig'%)") then
+		return
+	end
+	default_notify(msg, level, opts)
+end
+
 -- Load core configuration
 require("config.keymaps")
 require("config.autocmds")
