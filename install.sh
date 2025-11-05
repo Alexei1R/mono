@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#//NOTE: Color definitions for terminal output
+set -e
+
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
@@ -14,7 +15,6 @@ PKG_LIST="./pkg.list"
 LOG_FILE="install.log"
 MAX_WIDTH=80
 
-# Detect terminal width, but cap at MAX_WIDTH
 TERMINAL_WIDTH=$(tput cols)
 if [ $TERMINAL_WIDTH -gt $MAX_WIDTH ]; then
     TERMINAL_WIDTH=$MAX_WIDTH
@@ -33,17 +33,13 @@ show_loading_bar() {
     local filled=$((percentage * BAR_WIDTH / 100))
     local empty=$((BAR_WIDTH - filled))
 
-    # Truncate package name if too long
     local max_pkg_length=20
     local pkg_display="$package"
     if [ ${#package} -gt $max_pkg_length ]; then
         pkg_display="${package:0:$((max_pkg_length-3))}..."
     fi
 
-    # Move to the beginning of the line and clear it
     echo -ne "\r\033[K"
-    
-    # Print progress bar
     printf "[%-${filled}s%-${empty}s] %3d%% %-${max_pkg_length}s" \
            "$(printf '%0.s█' $(seq 1 $filled))" \
            "$(printf '%0.s░' $(seq 1 $empty))" \
@@ -117,12 +113,10 @@ install_packages() {
     local failed=0
     
     while IFS= read -r line || [ -n "$line" ]; do
-        # Skip comments and empty lines
         [[ -z "$line" || "$line" =~ ^#.*$ ]] && continue
         
         current=$((current + 1))
         
-        # Check if package is already installed
         if yay -Q "$line" &> /dev/null; then
             show_loading_bar "$current" "$total_pkgs" "$line"
             skipped=$((skipped + 1))
@@ -130,10 +124,8 @@ install_packages() {
             continue
         fi
         
-        # Show loading bar before install
         show_loading_bar "$current" "$total_pkgs" "$line"
         
-        # Install the package
         if yay -S --noconfirm "$line" &>> "$LOG_FILE"; then
             installed=$((installed + 1))
         else
@@ -147,21 +139,45 @@ install_packages() {
     echo -e "  ${GREEN}✓ Installed:${RESET} $installed  ${YELLOW}↷ Skipped:${RESET} $skipped  ${RED}✗ Failed:${RESET} $failed"
 }
 
+install_nvm_node() {
+    print_status "Installing nvm..."
+    
+    if [ -d "$HOME/.nvm" ]; then
+        print_success "nvm already installed"
+    else
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash &>> "$LOG_FILE" || {
+            print_error "Failed to install nvm"
+            return 1
+        }
+    fi
 
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
+    if ! command -v nvm &> /dev/null; then
+        print_error "nvm installation failed"
+        return 1
+    fi
+
+    print_status "Installing Node.js v22..."
+    nvm install 22 &>> "$LOG_FILE" || {
+        print_error "Failed to install Node.js"
+        return 1
+    }
+
+    NODE_VERSION=$(node -v)
+    print_success "Node.js installed: $NODE_VERSION"
+}
 
 run_installation() {
     > "$LOG_FILE"
     check_arch
     install_yay
     install_packages
+    install_nvm_node
     echo -e "${BLUE}[*]${RESET} Log saved to: ${BOLD}$LOG_FILE${RESET}"
-
-
-
 }
 
-# If script is run directly, execute installation
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     run_installation
 fi

@@ -3,52 +3,47 @@ hyprland
 hyprpaper
 hyprlock
 hyprcursor
+hyprpicker
 
-# Bar 
+# Bar and Menus
 waybar
 wlogout
 wofi
 
-
 # Fonts
 ttf-jetbrains-mono
-
+nerd-fonts-jetbrains-mono
 
 # Terminal and Editor
 kitty
 neovim
+zsh
+starship
 
 # Browser and PDF viewer
 zen-browser-bin
 zathura
 
-
 # Command-line tools
-fastfetch
-curl
-wget
-fzf
 zoxide
-yazi
 tree
 github-cli
-starship
 
-# Clipboard managers
+# Clipboard
 wl-clipboard
 cliphist
 
-
+# Screenshot tools
 swappy
 grim
 slurp
-
 
 # Utilities
 brightnessctl
 pavucontrol
 gnome-disk-utility
-zsh
+btop
+nautilus
 
 # Communication
 telegram-desktop
@@ -57,49 +52,31 @@ telegram-desktop
 go
 cmake
 gcc
-clang
-ninja
-gstreamer
-gst-plugins-base
-gst-plugins-good
-gst-plugins-bad
-gst-plugins-ugly
-gst-libav
+clangd
 ffmpeg
-gtk2
 gtk3
-libpng
-libjpeg-turbo
-openexr
-libtiff
-libwebp
-boost
+tree-sitter
 
-# More
+# Audio and Bluetooth
 jq
 pamixer
 pipewire
+wireplumber
 bluez
 bluez-utils
 blueman
-network-manager-applet
-btop
-pacman-contrib
-ttf-jetbrains-mono-nerd
-noto-fonts-emoji
-nautilus
+
+# Notifications
 dunst
 libnotify
-nwg-look
-sassc
-zenity
-wireplumber
-cava
+
+# Wayland integration
+# xdg-desktop-portal-hyprland-git
+
+# Theming
+adw-gtk-theme
+qt5ct
+qt6ct
+kvantum
+breeze-icons
 tidy
-
-tree-sitter
-
-
-
-webkit2gtk gtk3
-xdg-desktop-portal-hyprland-git   
