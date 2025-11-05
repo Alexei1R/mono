@@ -1,82 +1,84 @@
-# Window Manager
+# Display Server & Window Management
 hyprland
 hyprpaper
 hyprlock
 hyprcursor
 hyprpicker
 
-# Bar and Menus
+# User Interface
 waybar
 wlogout
 wofi
+dunst
+libnotify
+
+# Terminal & Shell
+kitty
+zsh
+starship
+
+# Editor & Development
+neovim
+go
+cmake
+gcc
+clangd
+github-cli
+tree-sitter
 
 # Fonts
 ttf-jetbrains-mono
 nerd-fonts-jetbrains-mono
 
-# Terminal and Editor
-kitty
-neovim
-zsh
-starship
-
-# Browser and PDF viewer
+# Applications
 zen-browser-bin
 zathura
+telegram-desktop
+nautilus
 
-# Command-line tools
-zoxide
+# System Utilities
+btop
+brightnessctl
+gnome-disk-utility
 tree
-github-cli
+zoxide
 
-# Clipboard
+# Clipboard Management
 wl-clipboard
 cliphist
 
-# Screenshot tools
-swappy
+# Screenshot & Media
 grim
 slurp
-
-# Utilities
-brightnessctl
-pavucontrol
-gnome-disk-utility
-btop
-nautilus
-
-# Communication
-telegram-desktop
-
-# Development tools
-go
-cmake
-gcc
-clangd
+swappy
 ffmpeg
-gtk3
-tree-sitter
 
-# Audio and Bluetooth
-jq
-pamixer
+# Audio System
 pipewire
 wireplumber
+pamixer
+pavucontrol
+
+# Bluetooth
 bluez
 bluez-utils
 blueman
 
-# Notifications
-dunst
-libnotify
-
-# Wayland integration
-# xdg-desktop-portal-hyprland-git
-
-# Theming
+# Theming & GTK
 adw-gtk-theme
+gtk3
 qt5ct
 qt6ct
 kvantum
 breeze-icons
+
+# System Libraries
+jq
 tidy
+
+# Wayland integration
+# xdg-desktop-portal-hyprland-git
+
+
+# Video
+vlc
