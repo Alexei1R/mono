@@ -32,6 +32,7 @@ end
 require("config.keymaps")
 require("config.autocmds")
 require("config.options")
+require("config.filetypes")
 
 -- Load plugins
 require("lazy").setup({

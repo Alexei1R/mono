@@ -1,63 +1,66 @@
 #!/bin/bash
 
 WINDOW_TITLE="Picture-in-Picture"
+LOCK_FILE="/tmp/pip-tracker.lock"
+PID_FILE="/tmp/pip-tracker.pid"
+
+cleanup() {
+    rm -f "$LOCK_FILE" "$PID_FILE"
+    exit 0
+}
+
+trap cleanup EXIT INT TERM
+
+if [ -f "$PID_FILE" ]; then
+    OLD_PID=$(cat "$PID_FILE")
+    if ps -p "$OLD_PID" > /dev/null 2>&1; then
+        echo "Stopping previous instance (PID: $OLD_PID)"
+        kill "$OLD_PID" 2>/dev/null
+        sleep 0.5
+    fi
+    rm -f "$PID_FILE" "$LOCK_FILE"
+fi
+
+echo $$ > "$PID_FILE"
+
+notify-send "PiP Tracker" "Started tracking Picture-in-Picture window"
+
 LAST_WORKSPACE=""
-LAST_WINDOW_ADDRESS=""
-IS_RUNNING=true
+LAST_ADDRESS=""
 
 get_window_address() {
     hyprctl clients -j | jq -r --arg title "$WINDOW_TITLE" '.[] | select(.title == $title) | .address'
 }
 
-move_to_active_workspace() {
-    WINDOW_ADDRESS=$(get_window_address)
-    ACTIVE_WORKSPACE=$(hyprctl activeworkspace -j | jq -r '.id')
+move_to_workspace() {
+    ADDRESS=$(get_window_address)
+    
+    if [ -z "$ADDRESS" ]; then
+        echo "PiP window not found, waiting..."
+        sleep 1
+        return
+    fi
+    
+    WORKSPACE=$(hyprctl activeworkspace -j | jq -r '.id')
 
-    # Only proceed if the workspace has changed or the window address has changed
-    if [ "$ACTIVE_WORKSPACE" != "$LAST_WORKSPACE" ] || [ "$WINDOW_ADDRESS" != "$LAST_WINDOW_ADDRESS" ]; then
-        echo "Detected window address: $WINDOW_ADDRESS"
-        echo "Detected active workspace: $ACTIVE_WORKSPACE"
-
-        if [ -n "$WINDOW_ADDRESS" ] && [ -n "$ACTIVE_WORKSPACE" ]; then
-            echo "Moving window $WINDOW_ADDRESS to workspace $ACTIVE_WORKSPACE"
-            hyprctl dispatch movetoworkspacesilent "$ACTIVE_WORKSPACE,address:$WINDOW_ADDRESS"
-
-            if [ $? -eq 0 ]; then
-                echo "Move command succeeded."
-                LAST_WORKSPACE="$ACTIVE_WORKSPACE"
-                LAST_WINDOW_ADDRESS="$WINDOW_ADDRESS"
-            else
-                echo "Move command failed."
-            fi
-        else
-            echo "Popup window not found or no active workspace detected."
-            IS_RUNNING=false
-        fi
+    if [ "$WORKSPACE" != "$LAST_WORKSPACE" ] || [ "$ADDRESS" != "$LAST_ADDRESS" ]; then
+        echo "[$(date +%T)] Moving PiP to workspace $WORKSPACE"
+        hyprctl dispatch movetoworkspacesilent "$WORKSPACE,address:$ADDRESS" 2>/dev/null
+        LAST_WORKSPACE="$WORKSPACE"
+        LAST_ADDRESS="$ADDRESS"
     fi
 }
 
-check_if_running() {
-    if [ "$IS_RUNNING" = true ]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-notify_and_exit() {
-    notify-send "Script Terminated" "The 'Picture-in-Picture' window is no longer running. The script has been closed."
-    exit 0
-}
-
-# Monitor the file for changes
-MONITOR_FILE="/tmp/hyprland_monitor"
-touch "$MONITOR_FILE"
+move_to_workspace
 
 while true; do
-    if ! check_if_running; then
-        notify_and_exit
-    fi
-
-    inotifywait -e modify "$MONITOR_FILE" >/dev/null 2>&1
-    move_to_active_workspace
+    socat -U - "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" 2>/dev/null | while read -r line; do
+        case "$line" in
+            workspace*|focusedmon*)
+                move_to_workspace
+                ;;
+        esac
+    done
+    
+    sleep 2
 done

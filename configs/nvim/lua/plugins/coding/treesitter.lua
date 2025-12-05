@@ -50,6 +50,7 @@ return {
 				"zig",
 				"dart",
 				"hcl",
+				"glsl",
 
 				-- General purpose
 				"diff",

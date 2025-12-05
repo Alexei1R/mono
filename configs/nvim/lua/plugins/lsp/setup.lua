@@ -87,6 +87,9 @@ return {
 			local servers = {
 				bashls = {},
 				clangd = {},
+				glsl_analyzer = {
+					filetypes = { "glsl" },
+				},
 				gopls = {},
 				pyright = {},
 				lua_ls = {

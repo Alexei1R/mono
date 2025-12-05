@@ -67,31 +67,14 @@ alias c='clear'
 alias s="source ~/.zshrc"
 alias f=fzf
 alias i="sudo pacman -Syu "
-alias n="neofetch"
-alias b="./build.sh"
 alias m="mkdir"
 alias t="touch"
 alias r="rm -rf"
 alias g="nvim ~/.zshrc"
 alias x=nvim
-alias p=cowsay
-alias pf=figlet
-alias say="espeak"
-alias fuck="espeak \" fuck off, stupid person \""
 alias sd="cd ~ && cd \$(find * -type d | fzf)"
 alias l="ls -a"
 alias ff="spf"
-
-
-
-function yy() {
-  local tmp="$(mktemp -t "yazi-cwd")"
-  yazi "$@" --cwd-file="$tmp"
-  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-    cd -- "$cwd"
-  fi
-  rm -f -- "$tmp"
-}
 
 bindkey -v
 bindkey '\ek' history-beginning-search-backward
@@ -108,29 +91,8 @@ eval "$(zoxide init --cmd cd zsh)"
 
 
 
-function ta() {
-    selected_session=$(tmux list-sessions -F "#{session_name}" | fzf --height 40% --reverse --header="Select tmux session to attach")
 
-    # If a session was selected (user didn't press ESC)
-    if [ -n "$selected_session" ]; then
-        # If we're already in tmux, switch to the selected session
-        if [ -n "$TMUX" ]; then
-            tmux switch-client -t "$selected_session"
-        else
-            # If we're not in tmux, attach to the selected session
-            tmux attach -t "$selected_session"
-        fi
-    fi
-}
-
-
-
-
-
-
-# alias bp='find "$(pwd)" -type f -exec echo "\"{}\"" \; '
 export PATH=$HOME/.local/bin:$PATH
-
 export PATH="$HOME/go/bin:$PATH"
 
 
@@ -138,8 +100,7 @@ bp() {
     # Default settings
     local exclude_dirs=(".git" "docs" "node_modules" "vendor" "dist" "build")
     local copy_clipboard=true
-    
-    # Process flags
+
     while [ "$1" != "" ]; do
         case $1 in
             -n|--no-copy)
@@ -147,7 +108,6 @@ bp() {
                 shift
                 ;;
             *)
-                # If not a flag, treat as directory to exclude
                 exclude_dirs=("$@")
                 break
                 ;;
@@ -175,7 +135,6 @@ bp() {
 
 
 
-# bun completions
 [ -s "/home/toor/.bun/_bun" ] && source "/home/toor/.bun/_bun"
 
 # bun
@@ -185,6 +144,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 
 export PATH="$PATH:/home/toor/.local/share/bin"
-
-
 alias scaffold="bash /home/toor/.local/share/bin/scaffold.sh"
+alias ai="bash /home/toor/.local/share/bin/ai.sh"
+alias ccp="bash /home/toor/.local/share/bin/ccp.sh"
+
+# opencode
+export PATH=/home/toor/.opencode/bin:$PATH
