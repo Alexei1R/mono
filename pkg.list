@@ -29,6 +29,7 @@ tree-sitter
 # Fonts
 ttf-jetbrains-mono
 nerd-fonts-jetbrains-mono
+ttf-jetbrains-mono-nerd
 
 # Applications
 zen-browser-bin

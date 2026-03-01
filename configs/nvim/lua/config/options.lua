@@ -56,6 +56,9 @@ vim.g.maplocalleader = " "
 -- Nerd Font
 vim.g.have_nerd_font = true
 
+-- Autoformat toggle (used by format-on-save autocmd)
+vim.g.autoformat = false
+
 vim.o.title = false
 
 vim.o.showtabline = 0

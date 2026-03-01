@@ -169,40 +169,40 @@ run_installation() {
 install_theme() {
     print_header "THEME INSTALLATION"
 
-    local temp_dir=$(mktemp -d)
-
-    cd "$temp_dir" || return 1
-    print_status "Cloning Graphite GTK theme..."
-
-    if ! git clone "$THEME_REPO" &> /dev/null; then
-        print_error "Failed to clone theme"
-        rm -rf "$temp_dir"
-        return 1
-    fi
-
-    cd Graphite-gtk-theme || return 1
-    print_status "Installing theme..."
-
-    if ./install.sh -d ~/.themes/ -t -c dark -s compact -l --tweaks darker rimless normal colorful &> /dev/null; then
-        print_success "Theme installed"
-    else
-        print_error "Theme installation failed"
-    fi
-
-    rm -rf "$temp_dir"
+#     local temp_dir=$(mktemp -d)
+#
+#     cd "$temp_dir" || return 1
+#     print_status "Cloning Graphite GTK theme..."
+#
+#     if ! git clone "$THEME_REPO" &> /dev/null; then
+#         print_error "Failed to clone theme"
+#         rm -rf "$temp_dir"
+#         return 1
+#     fi
+#
+#     cd Graphite-gtk-theme || return 1
+#     print_status "Installing theme..."
+#
+#     if ./install.sh -d ~/.themes/ -t -c dark -s compact -l --tweaks darker rimless normal colorful &> /dev/null; then
+#         print_success "Theme installed"
+#     else
+#         print_error "Theme installation failed"
+#     fi
+#
+#     rm -rf "$temp_dir"
 }
 
 run_postinstall() {
     print_header "POST-INSTALLATION"
 
-    print_status "Enabling Bluetooth..."
-    sudo systemctl enable bluetooth &> /dev/null
-    sudo systemctl start bluetooth &> /dev/null
-    print_success "Bluetooth enabled"
-
-    print_status "Enabling ly display manager..."
-    sudo systemctl enable ly.service &> /dev/null
-    print_success "ly enabled"
+    # print_status "Enabling Bluetooth..."
+    # sudo systemctl enable bluetooth &> /dev/null
+    # sudo systemctl start bluetooth &> /dev/null
+    # print_success "Bluetooth enabled"
+    #
+    # print_status "Enabling ly display manager..."
+    # sudo systemctl enable ly.service &> /dev/null
+    # print_success "ly enabled"
 
     chsh -s /usr/bin/zsh
 

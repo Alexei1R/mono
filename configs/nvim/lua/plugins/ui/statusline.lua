@@ -4,7 +4,6 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
-			"rebelot/kanagawa.nvim",
 			"ThePrimeagen/harpoon",
 		},
 		priority = 900, -- Load after colorscheme
@@ -132,44 +131,10 @@ return {
 				["r?"] = { name = "CONFIRM", color = "LualineConfirmMode" },
 			}
 
-			-- Setup lualine after the colorscheme is loaded to utilize its colors
-			local colors = require("kanagawa.colors").setup({ theme = "dragon" })
-			local theme = colors.theme
-
-			-- Define custom highlight groups for mode sections
-			local custom_theme = {
-				normal = {
-					a = { bg = theme.syn.fun, fg = theme.ui.bg_m3, gui = "bold" },
-					b = { bg = theme.ui.bg_p1, fg = theme.syn.fun },
-					c = { bg = theme.ui.bg, fg = theme.ui.fg },
-				},
-				insert = {
-					a = { bg = theme.diag.ok, fg = theme.ui.bg_m3, gui = "bold" },
-					b = { bg = theme.ui.bg_p1, fg = theme.diag.ok },
-				},
-				visual = {
-					a = { bg = theme.syn.keyword, fg = theme.ui.bg_m3, gui = "bold" },
-					b = { bg = theme.ui.bg_p1, fg = theme.syn.keyword },
-				},
-				replace = {
-					a = { bg = theme.syn.constant, fg = theme.ui.bg_m3, gui = "bold" },
-					b = { bg = theme.ui.bg_p1, fg = theme.syn.constant },
-				},
-				command = {
-					a = { bg = theme.syn.type, fg = theme.ui.bg_m3, gui = "bold" },
-					b = { bg = theme.ui.bg_p1, fg = theme.syn.type },
-				},
-				inactive = {
-					a = { bg = theme.ui.bg_m1, fg = theme.ui.fg_dim, gui = "bold" },
-					b = { bg = theme.ui.bg_m1, fg = theme.ui.fg_dim },
-					c = { bg = theme.ui.bg_m1, fg = theme.ui.fg_dim },
-				},
-			}
-
 			-- Configure lualine with all components
 			require("lualine").setup({
 				options = {
-					theme = custom_theme,
+					theme = "auto",
 					globalstatus = true,
 					disabled_filetypes = { statusline = { "dashboard", "alpha" } },
 					section_separators = { left = "", right = "" },
@@ -198,23 +163,12 @@ return {
 							"diff",
 							symbols = { added = " ", modified = " ", removed = " " },
 							padding = { left = 1, right = 1 },
-							diff_color = {
-								added = { fg = theme.vcs.added },
-								modified = { fg = theme.vcs.changed },
-								removed = { fg = theme.vcs.removed },
-							},
 						},
 						{
 							"diagnostics",
 							sources = { "nvim_diagnostic" },
 							symbols = { error = " ", warn = " ", info = " ", hint = " " },
 							padding = { left = 1, right = 1 },
-							diagnostics_color = {
-								error = { fg = theme.diag.error },
-								warn = { fg = theme.diag.warning },
-								info = { fg = theme.diag.info },
-								hint = { fg = theme.diag.hint },
-							},
 						},
 					},
 					lualine_c = {
@@ -233,24 +187,20 @@ return {
 								newfile = "[New]",
 							},
 							padding = { left = 1, right = 1 },
-							color = { fg = theme.ui.special },
 						},
 						{
 							lsp_progress,
 							padding = { left = 0, right = 1 },
-							color = { fg = theme.ui.special },
 						},
 					},
 					lualine_x = {
 						{
 							file_size,
 							padding = { left = 1, right = 1 },
-							color = { fg = theme.ui.fg_dim },
 						},
 						{
 							"encoding",
 							padding = { left = 1, right = 1 },
-							color = { fg = theme.ui.fg_dim },
 						},
 						{
 							"fileformat",
@@ -260,14 +210,12 @@ return {
 								mac = "󰘵 ", -- CR
 							},
 							padding = { left = 1, right = 1 },
-							color = { fg = theme.ui.fg_dim },
 						},
 					},
 					lualine_y = {
 						{
 							"filetype",
 							padding = { left = 1, right = 1 },
-							color = { fg = theme.ui.fg },
 						},
 					},
 					lualine_z = {
@@ -294,19 +242,6 @@ return {
 					lualine_y = {},
 					lualine_z = {},
 				},
-				tabline = {
-					-- Removed buffers from tabline as requested
-					lualine_z = {
-						{
-							"tabs",
-							mode = 1, -- Show tab names
-							tabs_color = {
-								active = "lualine_a_normal",
-								inactive = "lualine_b_inactive",
-							},
-						},
-					},
-				},
 				extensions = {
 					"oil",
 					"toggleterm",
@@ -316,22 +251,6 @@ return {
 					"quickfix",
 					"fugitive",
 				},
-			})
-
-			-- Define our own highlight groups that integrate with the kanagawa dragon theme
-			vim.api.nvim_create_autocmd("ColorScheme", {
-				pattern = "*",
-				callback = function()
-					if vim.g.colors_name == "kanagawa" or vim.g.colors_name == "kanagawa-dragon" then
-						vim.api.nvim_set_hl(0, "LualineNormalMode", { bg = theme.syn.fun, fg = theme.ui.bg_m3 })
-						vim.api.nvim_set_hl(0, "LualineInsertMode", { bg = theme.diag.ok, fg = theme.ui.bg_m3 })
-						vim.api.nvim_set_hl(0, "LualineVisualMode", { bg = theme.syn.keyword, fg = theme.ui.bg_m3 })
-						vim.api.nvim_set_hl(0, "LualineReplaceMode", { bg = theme.syn.constant, fg = theme.ui.bg_m3 })
-						vim.api.nvim_set_hl(0, "LualineTerminalMode", { bg = theme.syn.special1, fg = theme.ui.bg_m3 })
-						vim.api.nvim_set_hl(0, "LualineCommandMode", { bg = theme.syn.type, fg = theme.ui.bg_m3 })
-						vim.api.nvim_set_hl(0, "LualineConfirmMode", { bg = theme.diag.warning, fg = theme.ui.bg_m3 })
-					end
-				end,
 			})
 		end,
 	},

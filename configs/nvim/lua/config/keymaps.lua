@@ -8,8 +8,22 @@ map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>z", "<cmd>wq<cr>", { desc = "Save and quit" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
-map("n", "S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search and replace word under cursor" })
+-- map("n", "S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search and replace word under cursor" })
 map("n", "U", "<C-r>", { desc = "Redo" })
+
+
+
+-- Normal mode: whole buffer
+map("n", "S",
+    [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+    { desc = "Replace word under cursor (whole buffer)" }
+)
+
+-- Visual mode: selection only
+map("v", "S",
+    [[:s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+    { desc = "Replace word under cursor (selection only)" }
+)
 
 -- =====================
 -- Window navigation with Alt
@@ -83,3 +97,9 @@ vim.api.nvim_create_user_command("CopyWorkspaceLspErrors", function()
 end, { desc = "Copy all workspace LSP errors" })
 
 map("n", "<leader>lE", ":CopyWorkspaceLspErrors<CR>", { desc = "Copy workspace LSP errors" })
+
+-- =====================
+-- Image preview (kitty)
+-- =====================
+map("n", "<leader>ip", "<cmd>ImagePreview<CR>", { desc = "Image preview" })
+map("n", "<leader>ic", "<cmd>ImageClear<CR>", { desc = "Clear image preview" })

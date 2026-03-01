@@ -2,7 +2,7 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		event = { "BufWritePre" },
+		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "ConformInfo" },
 		keys = {
 			{
@@ -16,18 +16,21 @@ return {
 		},
 		opts = {
 			notify_on_error = false,
-			format_on_save = function(bufnr)
-				local disable_filetypes = { c = true, cpp = true }
-				if disable_filetypes[vim.bo[bufnr].filetype] then
-					return nil
-				else
-					return {
-						timeout_ms = 500,
-						lsp_format = "fallback",
-					}
-				end
-			end,
+			formatters = {
+				["clang-format"] = {
+					prepend_args = { "--style=file" },
+					cwd = function(ctx)
+						local filename = ctx and ctx.filename or ""
+						if filename == "" then
+							return vim.fn.getcwd()
+						end
+						return vim.fs.root(filename, { ".clang-format", ".git" }) or vim.fn.getcwd()
+					end,
+				},
+			},
 			formatters_by_ft = {
+				c = { "clang-format" },
+				cpp = { "clang-format" },
 				lua = { "stylua" },
 			},
 		},

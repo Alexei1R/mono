@@ -10,6 +10,12 @@ return {
 			"nvim-telescope/telescope.nvim",
 			"neovim/nvim-lspconfig",
 		},
-		opts = {},
+		opts = {
+			server = {
+				-- tailwind-tools currently uses deprecated lspconfig setup APIs.
+				-- Keep plugin features, but let main LSP config own server setup.
+				override = false,
+			},
+		},
 	},
 }

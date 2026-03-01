@@ -90,8 +90,12 @@ return {
 				glsl_analyzer = {
 					filetypes = { "glsl" },
 				},
+				wgsl_analyzer = {
+					filetypes = { "wgsl" },
+				},
 				gopls = {},
 				pyright = {},
+				tailwindcss = {},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -108,6 +112,7 @@ return {
 			}
 
 			local ensure_installed = vim.tbl_keys(servers or {})
+			table.insert(ensure_installed, "clang-format")
 			table.insert(ensure_installed, "stylua")
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

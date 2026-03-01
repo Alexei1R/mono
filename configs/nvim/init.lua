@@ -33,6 +33,7 @@ require("config.keymaps")
 require("config.autocmds")
 require("config.options")
 require("config.filetypes")
+require("config.compat")
 
 -- Load plugins
 require("lazy").setup({

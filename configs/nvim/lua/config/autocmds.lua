@@ -22,3 +22,33 @@ autocmd("VimResized", {
 		vim.cmd("tabdo wincmd =")
 	end,
 })
+
+-- Format on save using conform.nvim
+local format_group = augroup("FormatOnSave", { clear = true })
+autocmd("BufWritePre", {
+	desc = "Format buffer before saving",
+	group = format_group,
+	callback = function(args)
+		if not vim.g.autoformat then
+			return
+		end
+
+		local ok, conform = pcall(require, "conform")
+		if not ok then
+			return
+		end
+
+		conform.format({
+			bufnr = args.buf,
+			timeout_ms = 500,
+			lsp_format = "fallback",
+		})
+
+		-- message notification
+		vim.notify("Formatted buffer " .. args.buf, vim.log.levels.INFO, {
+			title = "Autoformat",
+			timeout = 1000,
+		})
+
+	end,
+})
