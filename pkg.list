@@ -22,7 +22,6 @@ neovim
 go
 cmake
 gcc
-clangd
 github-cli
 tree-sitter
 

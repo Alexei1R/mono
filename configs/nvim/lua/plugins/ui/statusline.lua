@@ -8,6 +8,15 @@ return {
 		},
 		priority = 900, -- Load after colorscheme
 		config = function()
+			local function micropython_component()
+				local ok, micropython = pcall(require, "micropython_nvim")
+				if not ok or type(micropython.exists) ~= "function" or not micropython.exists() then
+					return ""
+				end
+
+				return micropython.statusline()
+			end
+
 			-- Harpoon integration function
 			local function harpoon_component()
 				local harpoon_mark = require("harpoon.mark")
@@ -168,6 +177,10 @@ return {
 							"diagnostics",
 							sources = { "nvim_diagnostic" },
 							symbols = { error = " ", warn = " ", info = " ", hint = " " },
+							padding = { left = 1, right = 1 },
+						},
+						{
+							micropython_component,
 							padding = { left = 1, right = 1 },
 						},
 					},

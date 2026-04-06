@@ -1,7 +1,6 @@
 -- Filetype overrides for shader-related extensions
 vim.filetype.add({
 	extension = {
-		wgsl = "wgsl",
 		glsl = "glsl",
 		vert = "glsl",
 		frag = "glsl",
@@ -16,5 +15,12 @@ vim.filetype.add({
 		rmiss = "glsl",
 		rcall = "glsl",
 		code = "cpp",
+		mpy = "python",
+		wgsl = "rust",
+		pu = "plantuml",
+		puml = "plantuml",
+		plantuml = "plantuml",
+		iuml = "plantuml",
+		uml = "plantuml",
 	},
 })
